@@ -1,0 +1,6 @@
+const app_id = "33QBmfMXw5o1mCUXY5rug";
+
+document.getElementById("connect").onclick = () => {
+    window.location =
+    `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}`;
+};
