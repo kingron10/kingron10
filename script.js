@@ -32,4 +32,4 @@ if (loginBtn) {
     loginBtn.addEventListener("click", () => {
         alert("Login feature will be added in the next step.");
     });
-}ho
+}h
