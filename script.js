@@ -1,35 +1,48 @@
-// =============================
-// Deriv Trading Website Script
-// =============================
+// ===============================
+// Kingron Deriv Trader
+// ===============================
 
-// Replace this with your Deriv App ID
+// Replace with your Deriv App ID
 const APP_ID = "33QBmfMXw5olmCUXY5rug";
 
-// Connect to Deriv WebSocket
-const api = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`);
+const connectBtn = document.getElementById("connect");
+const status = document.getElementById("status");
+const balance = document.getElementById("balance");
 
-api.onopen = () => {
-    console.log("✅ Connected to Deriv API");
-};
+let ws = null;
 
-api.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log("Received:", data);
-};
+connectBtn.addEventListener("click", () => {
+    status.textContent = "Connecting...";
 
-api.onerror = (error) => {
-    console.error("Connection error:", error);
-};
+    ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`);
 
-api.onclose = () => {
-    console.log("❌ Disconnected from Deriv API");
-};
+    ws.onopen = () => {
+        status.textContent = "Connected";
 
-// Login button
-const loginBtn = document.getElementById("loginBtn");
+        // Request account balance
+        ws.send(JSON.stringify({
+            balance: 1
+        }));
+    };
 
-if (loginBtn) {
-    loginBtn.addEventListener("click", () => {
-        alert("Login feature will be added in the next step.");
-    });
-}
+    ws.onmessage = (msg) => {
+        const data = JSON.parse(msg.data);
+
+        if (data.error) {
+            status.textContent = data.error.message;
+            return;
+        }
+
+        if (data.msg_type === "balance") {
+            balance.textContent = data.balance.balance + " " + data.balance.currency;
+        }
+    };
+
+    ws.onerror = () => {
+        status.textContent = "Connection Error";
+    };
+
+    ws.onclose = () => {
+        status.textContent = "Disconnected";
+    };
+});
