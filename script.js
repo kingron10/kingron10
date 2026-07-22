@@ -21,7 +21,8 @@ connectBtn.addEventListener("click", () => {
 ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}&l=EN`);  
 
     ws.onopen = () => {
-        status.textContent = "Connected. Authorizing...";
+    status.textContent = "✅ WebSocket Connected";
+};
 
         ws.send(JSON.stringify({
             authorize: API_TOKEN
