@@ -3,7 +3,7 @@
 // ===============================
 
 // Replace with your Deriv App ID
-const APP_ID = "33QBmfMXw5olmCUXY5rug";
+const APP_ID = "33RdEbgPWTpp5a6mSF5uz";
 
 const connectBtn = document.getElementById("connect");
 const status = document.getElementById("status");
