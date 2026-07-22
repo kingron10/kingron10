@@ -6,7 +6,7 @@
 const APP_ID = "33RdEbgPWTpp5a6mSF5uz";
 
 // Your NEW Personal Access Token
-const API_TOKEN = "pat_8a920a9af4a9c1259dfbd16acb48e586faa76242784ffada00d87277453485e1";
+const API_TOKEN = "pat_249b0cc7ccbc6d29505425508db2214d0eb2d929a73b58d7ff430e8caf8c7749";
 
 const connectBtn = document.getElementById("connect");
 const status = document.getElementById("status");
