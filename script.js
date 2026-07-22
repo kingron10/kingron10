@@ -1,59 +1,66 @@
 // ===============================
-// Kingron Deriv Trader (OAuth)
+// Kingron Deriv Trader
 // ===============================
 
+// Your Deriv App ID
 const APP_ID = "33RdEbgPWTpp5a6mSF5uz";
-const REDIRECT_URI = "https://kingron10.github.io/kingron10/";
+
+// Your NEW Personal Access Token
+const API_TOKEN = "pat_8a920a9af4a9c1259dfbd16acb48e586faa76242784ffada00d87277453485e1";
 
 const connectBtn = document.getElementById("connect");
 const status = document.getElementById("status");
 const balance = document.getElementById("balance");
 
-const params = new URLSearchParams(window.location.search);
-const token = params.get("token1");
+let ws;
 
-if (token) {
+// Connect to Deriv
+connectBtn.addEventListener("click", () => {
     status.textContent = "Connecting...";
 
-    const ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`);
+    ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`);
 
     ws.onopen = () => {
+        status.textContent = "Connected. Authorizing...";
+
         ws.send(JSON.stringify({
-            authorize: token
+            authorize: API_TOKEN
         }));
     };
 
-    ws.onmessage = (msg) => {
-        const data = JSON.parse(msg.data);
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        console.log(data);
 
         if (data.error) {
-            status.textContent = data.error.message;
+            status.textContent = "❌ " + data.error.message;
             return;
         }
 
         if (data.msg_type === "authorize") {
-            status.textContent = "Connected";
+            status.textContent = "✅ Logged in as " + data.authorize.loginid;
+
             ws.send(JSON.stringify({
-                balance: 1
+                balance: 1,
+                subscribe: 1
             }));
         }
 
         if (data.msg_type === "balance") {
             balance.textContent =
-                data.balance.balance + " " + data.balance.currency;
+                "Balance: " +
+                data.balance.currency +
+                " " +
+                data.balance.balance;
         }
     };
 
     ws.onerror = () => {
-        status.textContent = "Connection Error";
+        status.textContent = "Connection error.";
     };
 
     ws.onclose = () => {
-        status.textContent = "Disconnected";
+        console.log("Connection closed");
     };
-}
-
-connectBtn.addEventListener("click", () => {
-    window.location.href =
-        `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}&l=EN&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 });
