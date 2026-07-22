@@ -18,7 +18,7 @@ let ws;
 connectBtn.addEventListener("click", () => {
     status.textContent = "Connecting...";
 
-    ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`);
+ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}&l=EN`);  
 
     ws.onopen = () => {
         status.textContent = "Connected. Authorizing...";
