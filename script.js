@@ -2,7 +2,7 @@
 // Kingron Deriv Trader
 // ===============================
 
-const APP_ID = "33RdEbgPWTpp5a6mSF5uz";
+const APP_ID = "33UDceAhNGEaf4PXGDRrv";
 const API_TOKEN = "pat_249b0cc7ccbc6d29505425508db2214d0eb2d929a73b58d7ff430e8caf8c7749";
 
 const connectBtn = document.getElementById("connect");
